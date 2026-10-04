@@ -6,323 +6,229 @@
 
   <title>Business Assistant</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f2f4f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .chat-container {
-      width: 100%;
-      max-width: 420px;
-      height: 650px;
-      background: white;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .header {
-      background: #111827;
-      color: white;
-      padding: 18px;
-      text-align: center;
-    }
-
-    .header h2 {
-      font-size: 20px;
-    }
-
-    .header p {
-      font-size: 12px;
-      margin-top: 5px;
-      opacity: 0.8;
-    }
-
-    #chat {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-    }
-
-    .message {
-      max-width: 80%;
-      padding: 10px 13px;
-      margin-bottom: 10px;
-      border-radius: 14px;
-      line-height: 1.4;
-      font-size: 14px;
-    }
-
-    .bot {
-      background: #eef1f5;
-      color: #111;
-      border-bottom-left-radius: 4px;
-    }
-
-    .user {
-      background: #111827;
-      color: white;
-      margin-left: auto;
-      border-bottom-right-radius: 4px;
-    }
-
-    .buttons {
-      padding: 10px;
-      display: grid;
-      gap: 8px;
-      border-top: 1px solid #eee;
-    }
-
-    button {
-      border: none;
-      padding: 11px;
-      border-radius: 10px;
-      background: #111827;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .input-area {
-      display: flex;
-      padding: 10px;
-      gap: 8px;
-      border-top: 1px solid #eee;
-    }
-
-    input {
-      flex: 1;
-      padding: 11px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .send {
-      width: 70px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="chat-container">
+  <div class="chat-container">
 
-  <div class="header">
-    <h2>Business Assistant</h2>
-    <p>Usually replies instantly</p>
-  </div>
+    <div class="header">
 
-  <div id="chat">
+      <div class="bot-avatar">
+        🤖
+      </div>
 
-    <div class="message bot">
-      Hi! 👋 Welcome to our business.
-      How can I help you?
+      <div class="header-info">
+        <h2>Business Assistant</h2>
+        <p><span class="online">●</span> Online</p>
+      </div>
+
+    </div>
+
+
+    <div id="chat">
+
+      <div class="message bot">
+        Hi! 👋 Welcome to our business.<br>
+        How can I help you today?
+      </div>
+
+    </div>
+
+
+    <div class="buttons">
+
+      <button onclick="quickReply('price')">
+        💰 Price
+      </button>
+
+      <button onclick="quickReply('timing')">
+        🕐 Opening Hours
+      </button>
+
+      <button onclick="quickReply('booking')">
+        📅 Book Appointment
+      </button>
+
+      <button onclick="quickReply('contact')">
+        📞 Contact
+      </button>
+
+    </div>
+
+
+    <div class="input-area">
+
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Type your question..."
+        onkeydown="if(event.key==='Enter') sendMessage()"
+      >
+
+      <button class="send" onclick="sendMessage()">
+        Send
+      </button>
+
     </div>
 
   </div>
 
-  <div class="buttons">
 
-    <button onclick="quickReply('price')">
-      💰 Price
-    </button>
+  <script>
 
-    <button onclick="quickReply('timing')">
-      🕐 Opening Hours
-    </button>
+    function addMessage(text, type) {
 
-    <button onclick="quickReply('booking')">
-      📅 Book Appointment
-    </button>
+      const chat = document.getElementById("chat");
 
-    <button onclick="quickReply('contact')">
-      📞 Contact
-    </button>
+      const message = document.createElement("div");
 
-  </div>
+      message.className = "message " + type;
 
-  <div class="input-area">
+      message.innerText = text;
 
-    <input
-      id="userInput"
-      type="text"
-      placeholder="Type your question..."
-      onkeydown="if(event.key==='Enter') sendMessage()"
-    >
+      chat.appendChild(message);
 
-    <button class="send" onclick="sendMessage()">
-      Send
-    </button>
+      chat.scrollTop = chat.scrollHeight;
+    }
 
-  </div>
 
-</div>
+    function botReply(text) {
 
+      setTimeout(function() {
 
-<script>
+        addMessage(text, "bot");
 
-function addMessage(text, type) {
+      }, 400);
 
-  const chat = document.getElementById("chat");
+    }
 
-  const message = document.createElement("div");
 
-  message.className = "message " + type;
+    function quickReply(type) {
 
-  message.innerText = text;
+      if (type === "price") {
 
-  chat.appendChild(message);
+        addMessage("What are your prices?", "user");
 
-  chat.scrollTop = chat.scrollHeight;
-}
+        botReply(
+          "Our haircut starts from ₹150. For other services, please contact us."
+        );
 
+      }
 
-function botReply(text) {
 
-  setTimeout(function() {
+      else if (type === "timing") {
 
-    addMessage(text, "bot");
+        addMessage("What are your opening hours?", "user");
 
-  }, 400);
+        botReply(
+          "We are open from 10:00 AM to 8:00 PM, Monday to Sunday."
+        );
 
-}
+      }
 
 
-function quickReply(type) {
+      else if (type === "booking") {
 
-  if (type === "price") {
+        addMessage("I want to book an appointment.", "user");
 
-    addMessage("What are your prices?", "user");
+        botReply(
+          "Sure! Please type your name and preferred appointment time."
+        );
 
-    botReply(
-      "Our haircut starts from ₹150. For other services, please contact us."
-    );
+      }
 
-  }
 
-  else if (type === "timing") {
+      else if (type === "contact") {
 
-    addMessage("What are your opening hours?", "user");
+        addMessage("How can I contact you?", "user");
 
-    botReply(
-      "We are open from 10:00 AM to 8:00 PM, Monday to Sunday."
-    );
+        botReply(
+          "You can contact us at +91 XXXXX XXXXX."
+        );
 
-  }
+      }
 
-  else if (type === "booking") {
+    }
 
-    addMessage("I want to book an appointment.", "user");
 
-    botReply(
-      "Sure! Please type your name and preferred appointment time."
-    );
+    function sendMessage() {
 
-  }
+      const input = document.getElementById("userInput");
 
-  else if (type === "contact") {
+      const text = input.value.trim();
 
-    addMessage("How can I contact you?", "user");
+      if (text === "") return;
 
-    botReply(
-      "You can contact us at +91 XXXXX XXXXX."
-    );
+      addMessage(text, "user");
 
-  }
+      input.value = "";
 
-}
+      const lower = text.toLowerCase();
 
 
-function sendMessage() {
+      if (
+        lower.includes("price") ||
+        lower.includes("cost") ||
+        lower.includes("rate")
+      ) {
 
-  const input = document.getElementById("userInput");
+        botReply(
+          "Our haircut starts from ₹150. Please contact us for other service prices."
+        );
 
-  const text = input.value.trim();
+      }
 
-  if (text === "") return;
 
-  addMessage(text, "user");
+      else if (
+        lower.includes("time") ||
+        lower.includes("open") ||
+        lower.includes("close")
+      ) {
 
-  input.value = "";
+        botReply(
+          "We are open from 10:00 AM to 8:00 PM."
+        );
 
-  const lower = text.toLowerCase();
+      }
 
 
-  if (
-    lower.includes("price") ||
-    lower.includes("cost") ||
-    lower.includes("rate")
-  ) {
+      else if (
+        lower.includes("book") ||
+        lower.includes("appointment")
+      ) {
 
-    botReply(
-      "Our haircut starts from ₹150. Please contact us for other service prices."
-    );
+        botReply(
+          "Sure! Please send your name and preferred appointment time."
+        );
 
-  }
+      }
 
-  else if (
-    lower.includes("time") ||
-    lower.includes("open") ||
-    lower.includes("close")
-  ) {
 
-    botReply(
-      "We are open from 10:00 AM to 8:00 PM."
-    );
+      else if (
+        lower.includes("contact") ||
+        lower.includes("phone")
+      ) {
 
-  }
+        botReply(
+          "You can contact us at +91 XXXXX XXXXX."
+        );
 
-  else if (
-    lower.includes("book") ||
-    lower.includes("appointment")
-  ) {
+      }
 
-    botReply(
-      "Sure! Please send your name and preferred appointment time."
-    );
 
-  }
+      else {
 
-  else if (
-    lower.includes("contact") ||
-    lower.includes("phone")
-  ) {
+        botReply(
+          "Thanks for your message! Please tell us what service you are interested in."
+        );
 
-    botReply(
-      "You can contact us at +91 XXXXX XXXXX."
-    );
+      }
 
-  }
+    }
 
-  else {
-
-    botReply(
-      "Thanks for your message! Please tell us what service you are interested in."
-    );
-
-  }
-
-}
-
-</script>
+  </script>
 
 </body>
-  </html>
+</html>
